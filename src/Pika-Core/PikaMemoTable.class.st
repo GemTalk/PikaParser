@@ -45,10 +45,11 @@ PikaMemoTable >> addMatch: newMatch withKey: memoKey priorityQueue: priorityQueu
 
 	| matchUpdated stdout |
 	matchUpdated := false.
-	stdout := ZnCharacterWriteStream
-		          on: (ZnBufferedWriteStream on: Stdio stdout)
-		          encoding: 'utf8'.
+	stdout := nil. "lint"
 	PikaGrammar debug ifTrue: [
+		stdout := ZnCharacterWriteStream
+			          on: (ZnBufferedWriteStream on: Stdio stdout)
+			          encoding: 'utf8'.
 		newMatch
 			ifNotNil: [
 				stdout << 'Matched: '.
