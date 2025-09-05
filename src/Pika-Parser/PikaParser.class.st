@@ -19,7 +19,7 @@ PikaParser class >> grammar [
 	^ grammar ifNil: [ self initializeGrammar ]
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'support' }
 PikaParser class >> grammarSource [
 	"Should answer a string specifying the source code of a Pika PEG parser."
 
