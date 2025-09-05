@@ -17,7 +17,7 @@ BaselineOfPikaParser >> baseline: spec [
 		spec
 			group: 'default' with: #( 'Dev' );
 			group: 'Dev' with: #( 'Core' 'Tests' );
-			group: 'Core' with: #( 'Pika-Core' );
+			group: 'Core' with: #( 'Pika-Parser' );
 			group: 'Tests' with: #( 'Pika-Tests' ).
 		spec
 			baseline: 'SkipList'
