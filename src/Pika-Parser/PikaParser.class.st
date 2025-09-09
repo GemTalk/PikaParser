@@ -156,8 +156,7 @@ PikaParser >> setSourceLocationOf: modelNode from: astNode [
 	endPos := startPos + astNode len - 1.
 	lineAndColumn := lineTable lineAndColumnForPosition: startPos.
 	sourceRef := PikaSourceReference new
-		             filename: self inputFilename;
-		             srcDir: self srcDir;
+		             fileReference: fileReference;
 		             lineNumber: lineAndColumn key;
 		             columnNumber: lineAndColumn value;
 		             sourceString: memoTable input;
