@@ -175,9 +175,9 @@ PikaParser >> syntaxCoverageRules [
 { #category : 'private' }
 PikaParser >> visitAstNode: astNode [
 
-	| selector dewNode |
+	| selector modelNode |
 	selector := (astNode label , ':') asSymbol.
-	dewNode := self perform: selector with: astNode.
-	self setSourceLocationOf: dewNode from: astNode.
-	^ dewNode
+	modelNode := self perform: selector with: astNode.
+	self setSourceLocationOf: modelNode from: astNode.
+	^ modelNode
 ]
