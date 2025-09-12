@@ -129,21 +129,10 @@ PikaParser >> privateParse: sourceString [
 { #category : 'private' }
 PikaParser >> reportSyntaxErrors [
 
-	| syntaxErrors text |
+	| syntaxErrors |
 	syntaxErrors := memoTable syntaxErrorsForRuleNames:
 		                self syntaxCoverageRules.
-	syntaxErrors ifEmpty: [ ^ self ].
-
-	"Inspect source with syntax error ranges bolded and in red."
-	text := memoTable input asText.
-	syntaxErrors keysAndValuesDo: [ :start :v |
-		| end |
-		end := v key - 1.
-		text
-			makeBoldFrom: start to: end;
-			makeColor: Color red from: start to: end ].
-	text inspect.
-	self error: 'syntax errors'
+	syntaxErrors ifNotEmpty: [ ^ self error: 'syntax errors' ]
 ]
 
 { #category : 'private' }
@@ -165,11 +154,36 @@ PikaParser >> setSourceLocationOf: modelNode from: astNode [
 	modelNode sourceReference: sourceRef
 ]
 
+{ #category : 'testing' }
+PikaParser >> shouldRecordSourceLocations [
+
+	^ true
+]
+
 { #category : 'private' }
 PikaParser >> syntaxCoverageRules [
 	"This method should answer a collection of rule names that, between them, should cover all input text."
 
 	self subclassResponsibility
+]
+
+{ #category : 'accessing' }
+PikaParser >> syntaxErrorReport [
+
+	| syntaxErrors text |
+	syntaxErrors := memoTable syntaxErrorsForRuleNames:
+		                self syntaxCoverageRules.
+	syntaxErrors ifEmpty: [ ^ 'No syntax errors found' ].
+
+	"Inspect source with syntax error ranges bolded and in red."
+	text := memoTable input asText.
+	syntaxErrors keysAndValuesDo: [ :start :v |
+		| end |
+		end := v key - 1.
+		text
+			makeBoldFrom: start to: end;
+			makeColor: Color red from: start to: end ].
+	text inspect
 ]
 
 { #category : 'private' }
@@ -178,6 +192,7 @@ PikaParser >> visitAstNode: astNode [
 	| selector modelNode |
 	selector := (astNode label , ':') asSymbol.
 	modelNode := self perform: selector with: astNode.
-	self setSourceLocationOf: modelNode from: astNode.
+	self shouldRecordSourceLocations ifTrue: [
+		self setSourceLocationOf: modelNode from: astNode ].
 	^ modelNode
 ]
