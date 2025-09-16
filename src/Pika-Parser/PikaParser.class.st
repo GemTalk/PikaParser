@@ -132,7 +132,7 @@ PikaParser >> reportSyntaxErrors [
 	| syntaxErrors |
 	syntaxErrors := memoTable syntaxErrorsForRuleNames:
 		                self syntaxCoverageRules.
-	syntaxErrors ifNotEmpty: [ ^ self error: 'syntax errors' ]
+	syntaxErrors ifNotEmpty: [ ^ PikaSyntaxError signal: 'syntax errors' ]
 ]
 
 { #category : 'private' }

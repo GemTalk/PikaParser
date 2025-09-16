@@ -33,7 +33,7 @@ PikaAnyClause >> makesSenseForNotFollowedBy [
 { #category : 'matching' }
 PikaAnyClause >> matchInput: inputString key: memoKey inTable: memoTable [
 
-	memoKey startPos < inputString size ifTrue: [
+	memoKey startPos <= inputString size ifTrue: [
 		^ PikaMatch memoKey: memoKey len: 1 input: inputString ].
 	^ nil
 ]
