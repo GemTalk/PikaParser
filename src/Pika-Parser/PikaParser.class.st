@@ -6,6 +6,8 @@ A subclass must provide method for each AST node type, which does whatever is ne
 Class {
 	#name : 'PikaParser',
 	#superclass : 'Object',
+	#traits : 'TPikaAstTools',
+	#classTraits : 'TPikaAstTools classTrait',
 	#instVars : [
 		'memoTable',
 		'lineTable',
@@ -184,15 +186,4 @@ PikaParser >> syntaxErrorReport [
 			makeBoldFrom: start to: end;
 			makeColor: Color red from: start to: end ].
 	text inspect
-]
-
-{ #category : 'private' }
-PikaParser >> visitAstNode: astNode [
-
-	| selector modelNode |
-	selector := (astNode label , ':') asSymbol.
-	modelNode := self perform: selector with: astNode.
-	self shouldRecordSourceLocations ifTrue: [
-		self setSourceLocationOf: modelNode from: astNode ].
-	^ modelNode
 ]
