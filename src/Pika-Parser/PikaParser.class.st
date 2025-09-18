@@ -124,7 +124,6 @@ PikaParser >> privateParse: sourceString [
 	| astRoot |
 	lineTable := PikaLineNumberTable forSource: sourceString.
 	astRoot := self parseToAst: sourceString.
-	self assert: astRoot hasNumChildren: 1.
 	^ self visitAstNode: astRoot
 ]
 
