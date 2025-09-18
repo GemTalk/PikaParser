@@ -111,8 +111,7 @@ PikaCharSetClause >> matchInput: inputString key: memoKey inTable: memoTable [
 		| c |
 		c := inputString at: memoKey startPos.
 		((self explicitlyMatches: c) or: [ self implicitlyMatches: c ])
-			ifTrue: [ "Terminals are not memoized (i.e. don't look in the memo table)"
-				^ PikaMatch memoKey: memoKey len: 1 input: inputString ] ].
+			ifTrue: [ ^ PikaMatch memoKey: memoKey len: 1 input: inputString ] ].
 	^ nil
 ]
 

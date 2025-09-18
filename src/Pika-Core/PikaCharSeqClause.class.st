@@ -53,7 +53,7 @@ PikaCharSeqClause >> matchInput: inputString key: memoKey inTable: memoTable [
 		ignoreCase ifTrue: [
 			op1 := op1 asUppercase.
 			op2 := op2 asUppercase ].
-		op1 = op2 ifTrue: [ "Terminals are not memoized (i.e. don't look in the memo table)"
+		op1 = op2 ifTrue: [
 			^ PikaMatch memoKey: memoKey len: str size input: inputString ] ].
 	^ nil
 ]
