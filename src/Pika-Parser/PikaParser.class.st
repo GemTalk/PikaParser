@@ -10,8 +10,6 @@ Class {
 	#classTraits : 'TPikaAstTools classTrait',
 	#instVars : [
 		'memoTable',
-		'lineTable',
-		'fileReference',
 		'startOffset'
 	],
 	#classInstVars : [
@@ -134,25 +132,6 @@ PikaParser >> reportSyntaxErrors [
 	syntaxErrors := memoTable syntaxErrorsForRuleNames:
 		                self syntaxCoverageRules.
 	syntaxErrors ifNotEmpty: [ ^ PikaSyntaxError signal: 'syntax errors' ]
-]
-
-{ #category : 'private' }
-PikaParser >> setSourceLocationOf: modelNode from: astNode [
-
-	| sourceRef lineAndColumn startPos endPos |
-	"If sourceReference already set by an inner AST node, keep that as being more accurate."
-	modelNode sourceReference ifNotNil: [ ^ self ].
-	startPos := astNode startPos.
-	endPos := startPos + astNode len - 1.
-	lineAndColumn := lineTable lineAndColumnForPosition: startPos.
-	sourceRef := PikaSourceReference new
-		             fileReference: fileReference;
-		             lineNumber: lineAndColumn key;
-		             columnNumber: lineAndColumn value;
-		             sourceString: memoTable input;
-		             addRangeStartPos: startPos endPos: endPos;
-		             yourself.
-	modelNode sourceReference: sourceRef
 ]
 
 { #category : 'testing' }

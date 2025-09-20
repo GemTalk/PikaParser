@@ -102,6 +102,12 @@ PikaAstNode >> initialize [
 ]
 
 { #category : 'accessing' }
+PikaAstNode >> input [
+
+	^ input
+]
+
+{ #category : 'accessing' }
 PikaAstNode >> input: anObject [
 
 	input := anObject
