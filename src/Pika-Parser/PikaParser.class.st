@@ -134,12 +134,6 @@ PikaParser >> reportSyntaxErrors [
 	syntaxErrors ifNotEmpty: [ ^ PikaSyntaxError signal: 'syntax errors' ]
 ]
 
-{ #category : 'testing' }
-PikaParser >> shouldRecordSourceLocations [
-
-	^ true
-]
-
 { #category : 'private' }
 PikaParser >> syntaxCoverageRules [
 	"This method should answer a collection of rule names that, between them, should cover all input text."
@@ -164,4 +158,10 @@ PikaParser >> syntaxErrorReport [
 			makeBoldFrom: start to: end;
 			makeColor: Color red from: start to: end ].
 	text inspect
+]
+
+{ #category : 'visiting' }
+PikaParser >> visitChildrenOf: astNode [
+
+	astNode children do: [ :childAst | self visitAstNode: childAst ]
 ]

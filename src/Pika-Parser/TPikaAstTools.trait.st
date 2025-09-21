@@ -57,7 +57,7 @@ TPikaAstTools >> visitAstNode: astNode [
 	| selector modelNode |
 	selector := (astNode label , ':') asSymbol.
 	modelNode := self perform: selector with: astNode.
-	self shouldRecordSourceLocations ifTrue: [
+	modelNode ifNotNil: [
 		self setSourceLocationOf: modelNode from: astNode ].
 	^ modelNode
 ]
