@@ -6,11 +6,11 @@ A subclass must provide method for each AST node type, which does whatever is ne
 Class {
 	#name : 'PikaParser',
 	#superclass : 'Object',
-	#traits : 'TPikaAstTools',
-	#classTraits : 'TPikaAstTools classTrait',
 	#instVars : [
 		'memoTable',
-		'startOffset'
+		'startOffset',
+		'lineTable',
+		'fileReference'
 	],
 	#classInstVars : [
 		'grammar'
@@ -68,9 +68,33 @@ PikaParser >> assert: astNode hasNumChildren: numChildren [
 ]
 
 { #category : 'accessing' }
+PikaParser >> fileReference [
+
+	^ fileReference
+]
+
+{ #category : 'accessing' }
+PikaParser >> fileReference: anObject [
+
+	fileReference := anObject
+]
+
+{ #category : 'accessing' }
 PikaParser >> grammar [
 
 	^ self class grammar
+]
+
+{ #category : 'accessing' }
+PikaParser >> lineTable [
+
+	^ lineTable
+]
+
+{ #category : 'accessing' }
+PikaParser >> lineTable: anObject [
+
+	lineTable := anObject
 ]
 
 { #category : 'parsing' }
@@ -135,6 +159,25 @@ PikaParser >> reportSyntaxErrors [
 ]
 
 { #category : 'private' }
+PikaParser >> setSourceLocationOf: modelNode from: astNode [
+
+	| sourceRef lineAndColumn startPos endPos |
+	"If sourceReference already set by an inner AST node, keep that as being more accurate."
+	modelNode sourceReference ifNotNil: [ ^ self ].
+	startPos := astNode startPos.
+	endPos := startPos + astNode len - 1.
+	lineAndColumn := lineTable lineAndColumnForPosition: startPos.
+	sourceRef := PikaSourceReference new
+		             fileReference: fileReference;
+		             lineNumber: lineAndColumn key;
+		             columnNumber: lineAndColumn value;
+		             sourceString: astNode input;
+		             addRangeStartPos: startPos endPos: endPos;
+		             yourself.
+	modelNode sourceReference: sourceRef
+]
+
+{ #category : 'private' }
 PikaParser >> syntaxCoverageRules [
 	"This method should answer a collection of rule names that, between them, should cover all input text."
 
@@ -158,6 +201,17 @@ PikaParser >> syntaxErrorReport [
 			makeBoldFrom: start to: end;
 			makeColor: Color red from: start to: end ].
 	text inspect
+]
+
+{ #category : 'private' }
+PikaParser >> visitAstNode: astNode [
+
+	| selector modelNode |
+	selector := (astNode label , ':') asSymbol.
+	modelNode := self perform: selector with: astNode.
+	modelNode ifNotNil: [
+		self setSourceLocationOf: modelNode from: astNode ].
+	^ modelNode
 ]
 
 { #category : 'visiting' }
