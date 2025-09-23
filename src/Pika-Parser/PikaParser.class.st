@@ -162,6 +162,7 @@ PikaParser >> reportSyntaxErrors [
 PikaParser >> setSourceLocationOf: modelNode from: astNode [
 
 	| sourceRef lineAndColumn startPos endPos |
+	(modelNode respondsTo: #sourceReference) ifFalse: [ ^ self ].
 	"If sourceReference already set by an inner AST node, keep that as being more accurate."
 	modelNode sourceReference ifNotNil: [ ^ self ].
 	startPos := astNode startPos.
@@ -209,8 +210,7 @@ PikaParser >> visitAstNode: astNode [
 	| selector modelNode |
 	selector := (astNode label , ':') asSymbol.
 	modelNode := self perform: selector with: astNode.
-	modelNode ifNotNil: [
-		self setSourceLocationOf: modelNode from: astNode ].
+	self setSourceLocationOf: modelNode from: astNode.
 	^ modelNode
 ]
 
