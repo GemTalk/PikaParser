@@ -162,7 +162,8 @@ PikaMemoTable >> ast [
 	ruleClause := topLevelRule labeledClause clause.
 	matches := self nonOverlappingMatchesForClause: ruleClause.
 	matches size = 1 ifFalse: [
-		self error: 'Expected only one top-level match' ].
+		self error: 'Expected exactly 1 top-level match, found '
+			, matches size printString ].
 	^ PikaAstNode
 		  label: topLevelRule labeledClause astNodeLabel
 		  match: matches first

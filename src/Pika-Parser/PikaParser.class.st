@@ -151,6 +151,7 @@ PikaParser >> privateParse: sourceString [
 
 { #category : 'private' }
 PikaParser >> reportSyntaxErrors [
+	"self syntaxErrorReport"
 
 	| syntaxErrors |
 	syntaxErrors := memoTable syntaxErrorsForRuleNames:
